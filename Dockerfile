@@ -1,21 +1,20 @@
-FROM ubuntu:22.04
+FROM debian:bookworm-slim
 
-# Avoid interactive prompts during package install
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install runtime dependencies:
-#  - cowsay, fortune-mod  -> required by wisecow.sh
-#  - netcat-openbsd       -> provides `nc` used to serve requests
+RUN echo 'Acquire::Retries "5";' > /etc/apt/apt.conf.d/80-retries && \
+    echo 'Acquire::http::Timeout "120";' >> /etc/apt/apt.conf.d/80-retries && \
+    echo 'Acquire::https::Timeout "120";' >> /etc/apt/apt.conf.d/80-retries
+
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         cowsay \
         fortune-mod \
-        fortunes \
+        fortunes-min \
         netcat-openbsd \
         ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 
-# cowsay/fortune binaries live under /usr/games on Debian/Ubuntu
 ENV PATH="/usr/games:${PATH}"
 
 WORKDIR /app
