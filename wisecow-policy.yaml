@@ -1,0 +1,86 @@
+# Zero-trust KubeArmor policy for the wisecow Deployment.
+#
+# Strategy: default-deny process execution, allow only the exact binaries
+# wisecow.sh needs (bash, nc, cowsay, fortune, cat, rm, mkfifo, sleep), and
+# block package-manager / shell-escape binaries that would indicate a
+# container breakout or supply-chain attack attempt.
+#
+# Apply with:
+#   kubectl apply -f kubearmor/wisecow-policy.yaml
+#
+# Trigger a violation (should be blocked / audited) e.g.:
+#   kubectl exec -it <wisecow-pod> -- apt-get update
+#   kubectl exec -it <wisecow-pod> -- wget https://example.com
+# Then check violations with:
+#   karmor logs -n default --json
+apiVersion: security.kubearmor.com/v1
+kind: KubeArmorPolicy
+metadata:
+  name: wisecow-allow-baseline
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: wisecow
+
+  process:
+    matchPaths:
+      - path: /app/wisecow.sh
+      - path: /usr/bin/bash
+      - path: /bin/bash
+      - path: /usr/games/cowsay
+      - path: /usr/games/fortune
+      - path: /usr/bin/nc
+      - path: /bin/nc
+      - path: /usr/bin/cat
+      - path: /bin/cat
+      - path: /usr/bin/rm
+      - path: /bin/rm
+      - path: /usr/bin/mkfifo
+      - path: /bin/mkfifo
+      - path: /usr/bin/sleep
+      - path: /bin/sleep
+
+  file:
+    matchDirectories:
+      - dir: /app/
+        recursive: true
+      - dir: /etc/
+        recursive: true
+        readOnlyPath: true
+      - dir: /usr/
+        recursive: true
+        readOnlyPath: true
+
+  network:
+    matchProtocols:
+      - protocol: tcp
+
+  action: Allow
+
+---
+# Explicitly block common tools used for lateral movement, package
+# installation, or downloading additional payloads inside the container.
+# Any attempt to run these inside the wisecow pod will show up as a
+# policy violation (screenshot this for Problem Statement 3).
+apiVersion: security.kubearmor.com/v1
+kind: KubeArmorPolicy
+metadata:
+  name: wisecow-block-suspicious
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: wisecow
+
+  process:
+    matchPaths:
+      - path: /usr/bin/apt
+      - path: /usr/bin/apt-get
+      - path: /usr/bin/dpkg
+      - path: /usr/bin/curl
+      - path: /usr/bin/wget
+      - path: /usr/bin/ssh
+      - path: /usr/bin/nmap
+
+  action: Block
