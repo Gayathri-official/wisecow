@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Wisecow — Accuknox DevOps Trainee Assessment
 
 This repo contains all the artifacts for Problem Statements 1, 2, and 3.
@@ -168,8 +168,8 @@ Take a screenshot of the resulting `Blocked` alert, and commit it along with the
 - [ ] Repo public గా ఉంచడం
 =======
 # wisecow
->>>>>>> 99be9e117409e26a689614b4942f81f0ea673857
-=======
+99be9e117409e26a689614b4942f81f0ea673857
+
 - [ ] Keep the repo public
->>>>>>> b2ab8b75ac48353bfb6d8128317ad0c6b4db2643
+b2ab8b75ac48353bfb6d8128317ad0c6b4db2643
  
