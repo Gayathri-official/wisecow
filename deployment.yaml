@@ -16,7 +16,11 @@ spec:
     spec:
       containers:
         - name: wisecow
+<<<<<<< HEAD
           image: mudraboyinagayathri29/wisecow:latest
+=======
+          image: image: mudraboyinagayathri29/wisecow:latest
+>>>>>>> b2ab8b75ac48353bfb6d8128317ad0c6b4db2643
           imagePullPolicy: Always
           ports:
             - containerPort: 4499
