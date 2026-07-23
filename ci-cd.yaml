@@ -37,12 +37,11 @@ jobs:
   deploy:
     needs: build-and-push
     runs-on: ubuntu-latest
+    if: ${{ vars.CD_ENABLED == 'true' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # KUBE_CONFIG secret should contain a base64-encoded kubeconfig
-      # that has access to the target cluster (Kind/Minikube/cloud).
       - name: Set up kubeconfig
         run: |
           mkdir -p $HOME/.kube
