@@ -37,6 +37,13 @@ jobs:
   deploy:
     needs: build-and-push
     runs-on: ubuntu-latest
+    # This job only runs if a KUBE_CONFIG secret has been added AND the
+    # repository variable CD_ENABLED is set to "true" (Settings > Secrets
+    # and variables > Actions > Variables). A local Minikube/Kind cluster
+    # is not reachable from GitHub's runners, so CD is left disabled by
+    # default; it is meant to be enabled when deploying to a real/cloud
+    # cluster that IS reachable from the internet.
+    if: ${{ vars.CD_ENABLED == 'true' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4

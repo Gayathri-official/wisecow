@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Wisecow — Accuknox DevOps Trainee Assessment
 
 ఈ repo లో మూడు Problem Statements (PS1, PS2, PS3) కి సంబంధించిన artifacts అన్నీ ఉన్నాయి.
@@ -163,3 +164,6 @@ karmor logs -n default --json
 - [ ] PS2: 2 scripts (system health monitor + app health checker) ✔
 - [ ] PS3: KubeArmor zero-trust policy + violation screenshot (optional)
 - [ ] Repo public గా ఉంచడం
+=======
+# wisecow
+>>>>>>> 99be9e117409e26a689614b4942f81f0ea673857
