@@ -16,8 +16,6 @@ spec:
     spec:
       containers:
         - name: wisecow
-          # Replace <DOCKERHUB_USERNAME> with your registry namespace.
-          # The GitHub Actions workflow pushes to this same image name.
           image: image: mudraboyinagayathri29/wisecow:latest
           imagePullPolicy: Always
           ports:
